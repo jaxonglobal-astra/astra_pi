@@ -66,9 +66,19 @@ export class SocketService {
 
         // --- Core Action Listeners ---
 
-        this.socket.on('astra:command:speak', (data: { text: string }) => {
+        this.socket.on('astra:command:speak', (data: { text: string, audio?: Buffer }) => {
             console.log(`🔊 Command Received: SPEAK -> "${data.text}"`);
-            // TODO: Hand off to Voice Service
+            if (this.speakCallback && data.audio) {
+                // If the server sent the audio buffer directly (e.g. from ElevenLabs)
+                this.speakCallback(data.audio);
+            }
+        });
+
+        // Also listen for raw audio chunks (streaming TTS)
+        this.socket.on('astra:voice:chunk', (chunk: Buffer) => {
+            if (this.speakCallback) {
+                this.speakCallback(chunk);
+            }
         });
 
         this.socket.on('astra:command:move', (data: { action: string }) => {
@@ -76,4 +86,11 @@ export class SocketService {
             // TODO: Hand off to Motor Service
         });
     }
+
+    private speakCallback: ((audio: Buffer) => void) | null = null;
+
+    public onSpeak(callback: (audio: Buffer) => void): void {
+        this.speakCallback = callback;
+    }
+}
 }

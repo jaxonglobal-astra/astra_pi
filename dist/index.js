@@ -1,12 +1,18 @@
 import dotenv from 'dotenv';
 import { SocketService } from './services/socket.js';
 import { EarsService } from './services/ears.js';
+import { VoiceService } from './services/voice.js';
 dotenv.config();
 console.log('🚀 Astra Pi Client Initializing...');
 const ASTRA_API_URL = process.env.ASTRA_API_URL || 'http://localhost:3000';
 const ASTRA_API_SECRET = process.env.ASTRA_API_SECRET;
 const nervousSystem = new SocketService(ASTRA_API_URL, ASTRA_API_SECRET);
 const ears = new EarsService(nervousSystem);
+const voice = new VoiceService();
+// Connect the senses
+nervousSystem.onSpeak((audioChunk) => {
+    voice.playAudio(audioChunk);
+});
 // Initialize the Nervous System
 nervousSystem.connect();
 // Temporary: Trigger listening on 'L' key for testing (if running interactively)
