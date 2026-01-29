@@ -1,0 +1,30 @@
+{
+    "name": "astra-pi",
+    "version": "1.0.0",
+    "description": "Astra Pi - Edge Client for Astra Ecosystem",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "dev": "tsx watch src/index.ts",
+        "lint": "eslint src/"
+    },
+    "keywords": [
+        "astra",
+        "pi",
+        "iot",
+        "edge"
+    ],
+    "author": "Jaxon Global",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.0"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.0",
+        "socket.io-client": "^4.7.0"
+    }
+}
