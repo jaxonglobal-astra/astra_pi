@@ -93,4 +93,3 @@ export class SocketService {
         this.speakCallback = callback;
     }
 }
-}
