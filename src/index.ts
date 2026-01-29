@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { SocketService } from './services/socket.js';
 import { EarsService } from './services/ears.js';
 import { VoiceService } from './services/voice.js';
+import { EyesService } from './services/eyes.js';
 
 dotenv.config();
 
@@ -13,10 +14,15 @@ const ASTRA_API_SECRET = process.env.ASTRA_API_SECRET;
 const nervousSystem = new SocketService(ASTRA_API_URL, ASTRA_API_SECRET);
 const ears = new EarsService(nervousSystem);
 const voice = new VoiceService();
+const eyes = new EyesService(nervousSystem);
 
 // Connect the senses
 nervousSystem.onSpeak((audioChunk) => {
     voice.playAudio(audioChunk);
+});
+
+nervousSystem.onLook(() => {
+    eyes.takeSnapshot();
 });
 
 // Initialize the Nervous System

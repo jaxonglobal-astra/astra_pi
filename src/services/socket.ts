@@ -85,11 +85,23 @@ export class SocketService {
             console.log(`🤖 Command Received: MOVE -> ${data.action}`);
             // TODO: Hand off to Motor Service
         });
+
+        this.socket.on('astra:command:look', () => {
+            console.log('👁️ Command Received: LOOK');
+            if (this.lookCallback) {
+                this.lookCallback();
+            }
+        });
     }
 
     private speakCallback: ((audio: Buffer) => void) | null = null;
+    private lookCallback: (() => void) | null = null;
 
     public onSpeak(callback: (audio: Buffer) => void): void {
         this.speakCallback = callback;
+    }
+
+    public onLook(callback: () => void): void {
+        this.lookCallback = callback;
     }
 }
